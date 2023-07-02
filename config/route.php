@@ -14,8 +14,20 @@
 
 use Webman\Route;
 
+// 给所有OPTIONS请求设置跨域
+Route::options('[{path:.+}]', function (){
+    return response('');
+});
 
 
+Route::post('/login', [\app\controller\AuthController::class, 'login']);
+
+Route::group('', function() {
+    Route::get('/me', [\app\controller\AuthController::class, 'meInfo']);
+})->middleware([
+    \app\middleware\CheckAuth::class,
+]);
 
 
-
+// 最后一行加上 关闭默认路由
+//Route::disableDefaultRoute();

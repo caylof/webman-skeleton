@@ -12,18 +12,8 @@
  * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-use Illuminate\Container\Container;
-
-//return new Webman\Container;
-
-$container = Container::getInstance();
-
-///// caylof rpc serer
-//$container->bind(\Caylof\Rpc\Driver\WorkmanServer::class, fn(Container $container) =>  new \Caylof\Rpc\Driver\WorkmanServer(
-//        new \Caylof\Rpc\ServiceCaller(
-//            new \Caylof\Rpc\ServiceRepository($container)
-//        )
-//    )
-//);
-
-return $container;
+return [
+    '' => [
+        \Webman\Cors\CORS::class
+    ]
+];

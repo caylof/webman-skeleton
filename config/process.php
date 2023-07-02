@@ -38,5 +38,12 @@ return [
                 'enable_memory_monitor' => DIRECTORY_SEPARATOR === '/',
             ]
         ]
-    ]
+    ],
+
+//    'rpc' => [
+//        'handler' => \Caylof\Rpc\Driver\WorkmanServer::class,
+//        'listen' => 'frame://0.0.0.0:2345',
+//        'count' => 1,
+//    ],
+
 ];

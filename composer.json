@@ -26,7 +26,19 @@
   "require": {
     "php": ">=7.2",
     "workerman/webman-framework": "^1.5.0",
-    "monolog/monolog": "^2.0"
+    "monolog/monolog": "^2.0",
+    "vlucas/phpdotenv": "^5.4",
+    "illuminate/database": "^10.11",
+    "illuminate/pagination": "^10.12",
+    "illuminate/events": "^10.12",
+    "symfony/var-dumper": "^6.2",
+    "illuminate/redis": "^10.11",
+    "webman/cors": "^1.0",
+    "illuminate/validation": "^10.12",
+    "symfony/cache": "^6.3",
+    "caylof/jwt": "^1.0",
+    "caylof/rpc": "^1.0",
+    "webman/console": "^1.2"
   },
   "suggest": {
     "ext-event": "For better performance. "

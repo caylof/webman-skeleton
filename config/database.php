@@ -12,4 +12,33 @@
  * @license   http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-return [];
+return [
+    'default' => 'mysql',
+
+    'connections' => [
+        'mysql' => [
+            'driver'      => 'mysql',
+            'host'        => env('DB_HOST', 'mysql'),
+            'port'        => env('DB_PORT', 3306),
+            'database'    => env('DB_NAME', 'test'),
+            'username'    => env('DB_USER', 'root'),
+            'password'    => env('DB_PASSWORD', 'root'),
+            'charset'     => 'utf8mb4',
+            'collation'   => 'utf8mb4_unicode_ci',
+            'prefix'      => '',
+            'strict'      => true,
+            'engine'      => null,
+            'options'     => [
+                \PDO::ATTR_EMULATE_PREPARES => true,
+            ],
+        ],
+
+//        'sqlite' => [
+//            'driver' => 'sqlite',
+//            'url' => env('DATABASE_URL'),
+//            'database' => env('DB_DATABASE', runtime_path('database.sqlite')),
+//            'prefix' => '',
+//            'foreign_key_constraints' => env('DB_FOREIGN_KEYS', false),
+//        ],
+    ],
+];
