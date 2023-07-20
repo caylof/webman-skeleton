@@ -2,6 +2,8 @@
 
 namespace app\exception;
 
+use Carbon\Carbon;
+use Symfony\Component\RateLimiter\Exception\RateLimitExceededException;
 use Throwable;
 use Illuminate\Validation\ValidationException;
 use Webman\Exception\ExceptionHandler;
@@ -13,6 +15,7 @@ class Handler extends ExceptionHandler
     public $dontReport = [
         AuthenticationException::class,
         ValidationException::class,
+        RateLimitExceededException::class,
     ];
 
     public function report(Throwable $exception)
@@ -30,6 +33,11 @@ class Handler extends ExceptionHandler
             $exception instanceof AuthenticationException => $this->renderJsonResponse($exception->status ?? 401, [
                 'message' => $exception->getMessage(),
             ]),
+            $exception instanceof RateLimitExceededException => $this->renderJsonResponse(429, [
+                'message' => 'Too many requests.',
+            ])->withHeader('X-RateLimit-Limit', $exception->getLimit())
+                ->withHeader('X-RateLimit-Remaining', $exception->getRemainingTokens())
+                ->withHeader('X-RateLimit-Reset', $exception->getRetryAfter()->diff(Carbon::now())->s),
             default => parent::render($request, $exception),
         };
     }
