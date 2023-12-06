@@ -3,6 +3,7 @@
 namespace app\exception;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Symfony\Component\RateLimiter\Exception\RateLimitExceededException;
 use Throwable;
 use Illuminate\Validation\ValidationException;
@@ -16,6 +17,7 @@ class Handler extends ExceptionHandler
         AuthenticationException::class,
         ValidationException::class,
         RateLimitExceededException::class,
+        ModelNotFoundException::class,
     ];
 
     public function report(Throwable $exception)
@@ -31,6 +33,9 @@ class Handler extends ExceptionHandler
                 'errors' => $exception->errors(),
             ]),
             $exception instanceof AuthenticationException => $this->renderJsonResponse($exception->status ?? 401, [
+                'message' => $exception->getMessage(),
+            ]),
+            $exception instanceof ModelNotFoundException => $this->renderJsonResponse(404, [
                 'message' => $exception->getMessage(),
             ]),
             $exception instanceof RateLimitExceededException => $this->renderJsonResponse(429, [

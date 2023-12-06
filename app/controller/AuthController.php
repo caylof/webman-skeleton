@@ -3,7 +3,6 @@
 namespace app\controller;
 
 use app\auth\Auth;
-use app\auth\User;
 use app\validation\rule\IsMobile;
 use app\validation\Validator;
 use support\Request;
@@ -20,16 +19,16 @@ class AuthController
         $vd = $v->validate();
 
         $auth = new Auth();
-        $result = $auth->publish(User::create([
+        $result = $auth->publish([
             'id' => 'u1',
             'name' => 'cctv'
-        ]));
+        ]);
         return json($result);
     }
 
     public function meInfo(Request $request): Response
     {
-        /* @var $user \app\auth\User */
+        /* @var array $user */
         $user = $request->authUser;
         return json($user);
     }
