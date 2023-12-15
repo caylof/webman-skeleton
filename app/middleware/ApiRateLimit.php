@@ -15,7 +15,7 @@ class ApiRateLimit implements MiddlewareInterface
     public function __construct(
         protected int $perMinLimit = 60,
         protected string $id = 'api',
-        protected string $policy = 'token_bucket',
+        protected string $policy = 'sliding_window',
     ) {}
 
     public function process(Request $request, callable $handler): Response
@@ -25,6 +25,7 @@ class ApiRateLimit implements MiddlewareInterface
             'policy' => $this->policy,
             'limit' => $this->perMinLimit,
             'rate' => ['interval' => '1 minutes'],
+            'interval' => '1 minutes',
         ], new CacheStorage(new RedisAdapter(Redis::connection()->client())));
         $limiter = $factory->create($request->getRealIp());
         $rateLimit = $limiter->consume()->ensureAccepted();
