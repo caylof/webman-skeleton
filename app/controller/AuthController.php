@@ -2,35 +2,37 @@
 
 namespace app\controller;
 
-use app\auth\Auth;
-use app\validation\rule\IsMobile;
-use app\validation\Validator;
+use app\auth\UserAuth;
+use app\form\UserLoginForm;
+use app\form\UserSignupForm;
+use app\model\User;
+use app\srv\UserAuthSrv;
 use support\Request;
 use support\Response;
 
 class AuthController
 {
-    public function login(Request $request): Response
+    public function signup(Request $request, UserSignupForm $userSignupForm, UserAuthSrv $userAuthSrv, UserAuth $userAuth): Response
     {
-        $v = new Validator($request->post(), [
-            'mobile' => ['required', 'string', new IsMobile()],
-            'code' => ['required', 'string'],
-        ]);
-        $vd = $v->validate();
+        $dto = $userSignupForm->validate($request->post());
+        $user = $userAuthSrv->signup($dto);
+        $result = $userAuth->publish(['id' => $user->id]);
+        return json($result);
+    }
 
-        $auth = new Auth();
-        $result = $auth->publish([
-            'id' => 'u1',
-            'name' => 'cctv'
-        ]);
+    public function login(Request $request, UserLoginForm $userSignInForm, UserAuthSrv $userAuthSrv, UserAuth $userAuth): Response
+    {
+        $dto = $userSignInForm->validate($request->post());
+        $user = $userAuthSrv->login($dto);
+        $result = $userAuth->publish(['id' => $user->id]);
         return json($result);
     }
 
     public function meInfo(Request $request): Response
     {
-        /* @var array $user */
-        $user = $request->authUser;
-        return json($user);
+        /* @var array $authUser */
+        $authUser = $request->authUser;
+        $user = User::find($authUser['id']);
+        return \response($user->toJson());
     }
-
 }

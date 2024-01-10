@@ -11,8 +11,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class Migrate extends Command
 {
-    protected static $defaultName = 'migrate';
-    protected static $defaultDescription = 'migrate';
+    protected static string $defaultName = 'migrate';
+    protected static string $defaultDescription = 'migrate';
     protected ?string $connection = null;
 
     /**
@@ -30,7 +30,7 @@ class Migrate extends Command
      * @param OutputInterface $output
      * @return int
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $operate = strtolower($input->getArgument('operate'));
         $name = $input->getArgument('name');

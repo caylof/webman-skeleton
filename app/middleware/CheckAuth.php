@@ -2,20 +2,16 @@
 
 namespace app\middleware;
 
+use app\auth\Base;
 use app\exception\AuthenticationException;
-use app\auth\Auth;
+use app\auth\UserAuth;
 use Webman\Http\Request;
 use Webman\Http\Response;
 use Webman\MiddlewareInterface;
 
 class CheckAuth implements MiddlewareInterface
 {
-    protected Auth $authSrv;
-
-    public function __construct()
-    {
-        $this->authSrv = new Auth();
-    }
+    public function __construct(protected Base $authSrv) {}
 
     public function process(Request $request, callable $handler): Response
     {
@@ -24,7 +20,7 @@ class CheckAuth implements MiddlewareInterface
             throw new AuthenticationException;
         }
 
-        ['validated' => $validated, 'user' => $user] = $this->authSrv->verify(Auth::TKN_TYPE_ACCESS, $jwtStr);
+        ['validated' => $validated, 'user' => $user] = $this->authSrv->verify(UserAuth::TKN_TYPE_ACCESS, $jwtStr);
         if (! $validated) {
             throw new AuthenticationException;
         }

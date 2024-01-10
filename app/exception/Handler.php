@@ -15,6 +15,7 @@ class Handler extends ExceptionHandler
 {
     public $dontReport = [
         AuthenticationException::class,
+        BusinessException::class,
         ValidationException::class,
         RateLimitExceededException::class,
         ModelNotFoundException::class,
@@ -31,6 +32,9 @@ class Handler extends ExceptionHandler
             $exception instanceof ValidationException => $this->renderJsonResponse($exception->status ?? 422, [
                 'message' => $exception->getMessage(),
                 'errors' => $exception->errors(),
+            ]),
+            $exception instanceof BusinessException => $this->renderJsonResponse($exception->status ?? 423, [
+                'message' => $exception->getMessage(),
             ]),
             $exception instanceof AuthenticationException => $this->renderJsonResponse($exception->status ?? 401, [
                 'message' => $exception->getMessage(),

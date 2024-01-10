@@ -24,7 +24,7 @@ return [
             'username'    => env('DB_USER', 'root'),
             'password'    => env('DB_PASSWORD', 'root'),
             'charset'     => 'utf8mb4',
-            'collation'   => 'utf8mb4_unicode_ci',
+            'collation'   => 'utf8mb4_general_ci',
             'prefix'      => '',
             'strict'      => true,
             'engine'      => null,

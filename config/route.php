@@ -20,14 +20,15 @@ Route::options('[{path:.+}]', function (){
 });
 
 
+Route::post('/signup', [\app\controller\AuthController::class, 'signup']);
 Route::post('/login', [\app\controller\AuthController::class, 'login']);
 
 Route::group('', function() {
     Route::get('/me', [\app\controller\AuthController::class, 'meInfo']);
 })->middleware([
-    \app\middleware\CheckAuth::class,
+    new \app\middleware\CheckAuth(new \app\auth\UserAuth()),
 ]);
 
 
 // 最后一行加上 关闭默认路由
-//Route::disableDefaultRoute();
+Route::disableDefaultRoute();
