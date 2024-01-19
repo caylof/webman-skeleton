@@ -1,10 +1,10 @@
 <?php
 
-namespace app\shared;
+namespace app\shared\helper;
 
 use Illuminate\Support\Arr;
 
-class FilterCaseHandler
+class FilterCaseHelper
 {
     public array $equalFields = [];
     public array $likeFields = [];
