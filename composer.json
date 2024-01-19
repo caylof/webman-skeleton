@@ -39,7 +39,8 @@
     "caylof/jwt": "^1.0",
     "caylof/rpc": "^1.0",
     "webman/console": "^1.2",
-    "symfony/rate-limiter": "^6.3"
+    "symfony/rate-limiter": "^6.3",
+    "webman/captcha": "^1.0"
   },
   "suggest": {
     "ext-event": "For better performance. "

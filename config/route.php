@@ -20,6 +20,7 @@ Route::options('[{path:.+}]', function (){
 });
 
 
+Route::post('/captcha', [\app\controller\CaptchaController::class, 'send']);
 Route::post('/signup', [\app\controller\AuthController::class, 'signup']);
 Route::post('/login', [\app\controller\AuthController::class, 'login']);
 

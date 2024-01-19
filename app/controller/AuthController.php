@@ -33,6 +33,6 @@ class AuthController
         /* @var array $authUser */
         $authUser = $request->authUser;
         $user = User::find($authUser['id']);
-        return \response($user->toJson());
+        return json($user->toArray());
     }
 }
