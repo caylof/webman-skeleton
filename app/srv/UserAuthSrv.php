@@ -2,6 +2,7 @@
 
 namespace app\srv;
 
+use app\auth\UserAuth;
 use app\exception\BusinessException;
 use app\model\User;
 use app\shared\helper\SignHelper;
@@ -12,13 +13,15 @@ class UserAuthSrv
     const LoginScene = 2;
 
     protected SignHelper $signHelper;
+    protected UserAuth $userAuth;
 
     public function __construct()
     {
         $this->signHelper = new SignHelper(config('services.sign.captcha_secret'), 120);
+        $this->userAuth = new UserAuth();
     }
 
-    public function signup(array $dto): User
+    public function signup(array $dto): array
     {
         if (! $this->signHelper->check($dto['captcha_key'], $dto['captcha_code'], self::SignUpScene)) {
             throw new BusinessException(trans('CaptchaVerifyFailed'));
@@ -34,10 +37,10 @@ class UserAuthSrv
         $user->nickname = $dto['nickname'] ?? null;
         $user->save();
 
-        return $user;
+        return $this->userAuth->publish(['id' => $user->id]);
     }
 
-    public function login(array $dto): User
+    public function login(array $dto): array
     {
         if (! $this->signHelper->check($dto['captcha_key'], $dto['captcha_code'], self::LoginScene)) {
             throw new BusinessException(trans('CaptchaVerifyFailed'));
@@ -50,6 +53,6 @@ class UserAuthSrv
             throw new BusinessException(trans('PasswordError'));
         }
 
-        return $user;
+        return $this->userAuth->publish(['id' => $user->id]);;
     }
 }
