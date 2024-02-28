@@ -7,6 +7,7 @@ use Caylof\Jwt\JwtParser;
 use Caylof\Jwt\JwtSigner;
 use Caylof\Jwt\JwtValidator;
 use JetBrains\PhpStorm\ArrayShape;
+use Lcobucci\JWT\Token\InvalidTokenStructure;
 
 abstract class Base
 {
@@ -34,7 +35,15 @@ abstract class Base
     #[ArrayShape(['validated' => 'bool', 'user' => 'array'])]
     public function verify(string $tknType, string $jwtStr): array
     {
-        $token = $this->jwtParser->parse($jwtStr);
+        try {
+            $token = $this->jwtParser->parse($jwtStr);
+        } catch (InvalidTokenStructure) {
+            return [
+                'validated' => false,
+                'user' => null,
+            ];
+        }
+
         $jwtValidator = new JwtValidator(
             issuer: $this->issuer,
             subject: $tknType,
